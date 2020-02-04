@@ -1,23 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class SwipeRotateTest : MonoBehaviour
+public class SwipeRotateTest : MonoBehaviour //работает только в билде.
 {
 
     private Touch touch;
-    private Vector2 touchPosition;
     private Quaternion rotationY;
     private float rotateSpeedModifier = 0.1f;
 
 
     void Update()
     {
-
-        //if (Input.GetMouseButton(0))
-        //{
-        //    transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X") * -1, 0) * 10 * Time.deltaTime);
-        //}
         if (Input.touchCount > 0)
         {
             touch = Input.GetTouch(0);

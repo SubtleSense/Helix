@@ -5,79 +5,67 @@ using UnityEngine.UI;
 
 public class BallPhysicAndInteractions : MonoBehaviour
 {
-    public Rigidbody rb;
-    public float force;
-    public Text ScoreText; // Компонент для вывод текста
-    public bool check = false;
+    public Rigidbody rb;                //обращение к Rigidbody объекта.
+    public Text ScoreText;              //компонент для вывод текста.
+    public bool ColliderOn = false;     //элеиент компонента, отображает состояние коллайдера объекта. по дефолту коллайдер отключен.
 
 
-    private int points = 0;
+    private int points = 0;             //кол-во столкновений объекта с триггером Transparent.
 
-   public void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other) //взаимодействие объекта с триггерами.
     {
-        if (other.tag == "Black") //тригер на обычный сектор платформы
+        if (other.tag == "Black")           //тригер на обычнную секцию платформы.
         {
             BlockReaction();
         }
 
-        if (other.tag == "Fail") //тригер на проигрышный сектор платформы
+        if (other.tag == "Fail")            //тригер на проигрышную секцию платформы.
         {
             DieReaction();
         }
 
-        if (other.tag == "Transparent") //тригер на выигрышный сектор платформы
+        if (other.tag == "Transparent")     //тригер на "пустую" секцию платфонмы.
         {      
            
-            other.transform.parent.GetComponent<ForceAndDestroy>().PlatformDestroyer();
+            other.transform.parent.GetComponent<ForceAndDestroy>().PlatformDestroyer(); //ссылка на метод родителя триггера.
             ScoreUpdate(); 
         }
 
-        if (other.tag == "Finish")
+        if (other.tag == "Finish")          //тригер на жёлтую платфонму.(пока пуст)
         {
             Finishing();
         }
     }
 
-    void BlockReaction()
+    void BlockReaction()        //физика отскока объекта.
     {
-        if (!check)
+        if (!ColliderOn)
         {
-            check = true;
-            rb.velocity = Vector3.zero;
-            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
-            transform.Translate((Vector3.up.normalized * force));
+            ColliderOn = true;                                  //включил коллайдер.
+            rb.velocity = Vector3.zero;                         //сбросил ускорение.
+            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);    //указал вектор силы, ее мощность и характер воздействия.
 
-            StartCoroutine(bla());
+            StartCoroutine(ClliderOff());
         }
     }
-
-    void DieReaction()
+    IEnumerator ClliderOff()    //отключил колайдер объекта через 0.1 секунды после BlockReaction.
+    {
+        yield return new WaitForSeconds(0.1f); // таймер.
+        ColliderOn = false;                    // откл.
+    }
+    void DieReaction()          //перезапустил сцену Game.
     {
         SceneManager.LoadScene("game");
     }
 
-    //Обновляем очки
-    void ScoreUpdate()
+    void ScoreUpdate()          //посчитал столуновения с триггером Transparent, записал в текстовое поле очки.
     {
-        if (!check)
-        {
-            check = true;
-            points++;
-            ScoreText.text = points + "";
-
-            StartCoroutine(bla());
-        }
-
+        points++;
+        ScoreText.text = points + "";
     }
 
-    void Finishing()
+    void Finishing()            //... пока пуст.
     {
         ScoreText.text = points + " total!";
-    }
-
-    IEnumerator bla()
-    {
-        yield return new WaitForSeconds(0.1f);
-        check = false;
     }
 }
