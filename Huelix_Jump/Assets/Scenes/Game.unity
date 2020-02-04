@@ -201,9 +201,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 572059554}
-  force: 0.5
   ScoreText: {fileID: 1748549120}
-  check: 0
+  ColliderOn: 0
 --- !u!54 &572059554 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 5861162528925633848, guid: aa6391e35b96df140802a41b7e339991,
@@ -763,6 +762,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6404950823201287974, guid: 55b1fa9446e996546b7f914dde6615e2,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.5735764
+      objectReference: {fileID: 0}
+    - target: {fileID: 6404950823201287974, guid: 55b1fa9446e996546b7f914dde6615e2,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8191521
+      objectReference: {fileID: 0}
+    - target: {fileID: 6404950823201287974, guid: 55b1fa9446e996546b7f914dde6615e2,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 70
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55b1fa9446e996546b7f914dde6615e2, type: 3}
