@@ -11,7 +11,6 @@ public class ForceAndDestroy : MonoBehaviour
     {
         for (int i = 0; i <  items.Length; i++)
         {
-            Debug.Log("i = " + i);
             items[i].gameObject.AddComponent<Rigidbody>();                                                                                  //добавил компонент Rigidbody.
             items[i].gameObject.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-10f, 10f), 0, Random.Range(-10f, 10f));      //крутящий момент для Rigidbody.
             items[i].gameObject.GetComponent<Rigidbody>().AddForce(Vector3.up * Random.Range(1, 10), ForceMode.Impulse);                    //указал вектор силы, ее мощность и характер воздействия.
