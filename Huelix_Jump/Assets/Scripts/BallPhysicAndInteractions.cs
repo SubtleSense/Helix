@@ -8,9 +8,10 @@ public class BallPhysicAndInteractions : MonoBehaviour
     public int points = 0;             //кол-во столкновений объекта с триггером Transparent(начальное значение).
     public int score = 0;             //кол-во столкновений объекта с триггером Transparent(начальное значение).
     public Text ScoreText;              //компонент для вывод текста.
-    void Speed()
+    public GameObject FailPanel;
+    private void Start()
     {
-        
+        FailPanel.SetActive(false);
     }
     public void OnTriggerEnter(Collider other) //взаимодействие объекта с триггерами.
     {
@@ -38,7 +39,8 @@ public class BallPhysicAndInteractions : MonoBehaviour
 
         if (other.tag == "Fail")            //тригер на проигрышную секцию платформы.
         {
-            
+            FailPanel.SetActive(true);
+
             if (shield >= 3)       //условие "активации брони"
             {
                 ScoreUpdate();           //ссылка на метод родителя триггера(начисли/обноаил очки).

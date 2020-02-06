@@ -10,10 +10,13 @@ public class ForceAndDestroy : BallPhysicAndInteractions
 
     public GameObject[] items;          //массив сеуций
     public Rigidbody rb;                //обращение к Rigidbody объекта.
-    
+
+
     public bool ColliderOff = false;    //элеиент компонента, отображает состояние коллайдера объекта. по дефолту коллайдер отключен.
-
-
+    void Start()
+    {
+        
+    }
 
     public void PlatformDestroyer()     //метод ломающий плаьформы
     {
@@ -44,8 +47,10 @@ public class ForceAndDestroy : BallPhysicAndInteractions
     }
     public void Restart()          //перезапустил сцену Game.
     {
+        FailPanel.SetActive(false);
         Time.timeScale = 1.8f;
         SceneManager.LoadScene("game");
+        
     }
 
     public void Finishing()            //... пока пуст.
