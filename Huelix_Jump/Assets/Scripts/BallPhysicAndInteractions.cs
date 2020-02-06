@@ -1,100 +1,84 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 using UnityEngine.UI;
+
 
 public class BallPhysicAndInteractions : MonoBehaviour
 {
-    public Rigidbody rb;                //обращение к Rigidbody объекта.
+    public int shield = 0;             //кол-во столкновений объекта с триггером Transparent(начальное значение).
+    public int points = 0;             //кол-во столкновений объекта с триггером Transparent(начальное значение).
+    public int score = 0;             //кол-во столкновений объекта с триггером Transparent(начальное значение).
     public Text ScoreText;              //компонент для вывод текста.
-    public bool ColliderOff = false;    //элеиент компонента, отображает состояние коллайдера объекта. по дефолту коллайдер отключен.
-
-    private int shield = 0;             //кол-во столкновений объекта с триггером Transparent(начальное значение).
-    private int points = 0;             //кол-во столкновений объекта с триггером Transparent(начальное значение).
-
+    void Speed()
+    {
+        
+    }
     public void OnTriggerEnter(Collider other) //взаимодействие объекта с триггерами.
     {
+        Time.timeScale = 1.8f;
         if (other.tag == "Black")           //тригер на обычнную секцию платформы.
         {
+            Time.timeScale = 2f;
+
             if (shield >= 3)        //условие "активации брони" 
             {
-                BlockReaction();
-                ScoreUpdate();
-                other.transform.parent.GetComponent<ForceAndDestroy>().PlatformDestroyer();  //ссылка на метод родителя триггера.("включил броню")
-                shield = 0;         //"отключил броню"
+                
+                ScoreUpdate();           //ссылка на метод родителя триггера(начисли/обноаил очки).
+                other.transform.parent.GetComponent<ForceAndDestroy>().BlockReaction();         //ссылка на метод родителя триггера("отскок").
+                other.transform.parent.GetComponent<ForceAndDestroy>().PlatformDestroyer();     //ссылка на метод родителя триггера("включил броню").
+                shield = 0;        //"отключил броню".
 
             }
 
             else
             {
-                BlockReaction();
-                shield = 0;
+                other.transform.parent.GetComponent<ForceAndDestroy>().BlockReaction();
+                shield = 0;        //"отключил броню".
             }
         }
 
         if (other.tag == "Fail")            //тригер на проигрышную секцию платформы.
         {
+            
             if (shield >= 3)       //условие "активации брони"
             {
-                BlockReaction();
-                ScoreUpdate();
-                other.transform.parent.GetComponent<ForceAndDestroy>().PlatformDestroyer();  //ссылка на метод родителя триггера.("включил броню")
-                shield = 0;        //"отключил броню"
+                ScoreUpdate();           //ссылка на метод родителя триггера(начисли/обноаил очки).
+                other.transform.parent.GetComponent<ForceAndDestroy>().BlockReaction();         //ссылка на метод родителя триггера("отскок").
+                other.transform.parent.GetComponent<ForceAndDestroy>().PlatformDestroyer();     //ссылка на метод родителя триггера("включил броню").
+                shield = 0;        //"отключил броню".
 
             }
 
             else
             {
-                DieReaction();
-                shield = 0;
+                Time.timeScale = 0;
+                shield = 0;        //"отключил броню".
             }
 
         }
 
         if (other.tag == "Transparent")     //тригер на "пустую" секцию платфонмы.
         {
-            other.transform.parent.GetComponent<ForceAndDestroy>().PlatformDestroyer();      //ссылка на метод родителя триггера.
-            ScoreUpdate();
+            ScoreUpdate();           //ссылка на метод родителя триггера(начисли/обноаил очки).
+            other.transform.parent.GetComponent<ForceAndDestroy>().PlatformDestroyer();     //ссылка на метод родителя триггера("включил броню").
+            shield++;                                                                       //кол-во столкновений объекта с триггером Transparent(фактическое).
         }
 
         if (other.tag == "Finish")          //тригер на жёлтую платфонму.(пока пуст)
         {
-            shield = 0;
-            Finishing();
-            BlockReaction();
+            shield = 0;        //"отключил броню".
+            other.transform.parent.GetComponent<ForceAndDestroy>().BlockReaction();         //ссылка на метод родителя триггера("отскок").
         }
     }
 
-    void BlockReaction()        //физика отскока объекта.
-    {
-        if (!ColliderOff)
-        {
-            ColliderOff = true;                                 //включил коллайдер.
-            rb.velocity = Vector3.zero;                         //сбросил ускорение.
-            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);    //указал вектор силы, ее мощность и характер воздействия.
-
-            StartCoroutine(ClliderOff());
-        }
-    }
-    IEnumerator ClliderOff()    //отключил колайдер объекта через 0.1 секунды после BlockReaction.
-    {
-        yield return new WaitForSeconds(0.1f);  // таймер.
-        ColliderOff = false;                    // откл.
-    }
-    void DieReaction()          //перезапустил сцену Game.
-    {
-        SceneManager.LoadScene("game");
-    }
-
-    void ScoreUpdate()          //посчитал столуновения с триггером Transparent, записал в текстовое поле очки.
-    {
+    public void ScoreUpdate()          //посчитал столуновения с триггером Transparent, записал в текстовое поле очки.
+    { 
         points++;                       //кол-во столкновений объекта с триггером Transparent(фактическое).
-        shield++;                       //кол-во столкновений объекта с триггером Transparent(фактическое).
-        ScoreText.text = points + "";   //вывел на эеран кол-во столкновений объекта с триггером Transparent(фактическое).
+        if ((shield >= 3) && (shield != 0))
+        {
+            score = score + shield;
+        }
+        ScoreText.text = points + score + "";   //вывел на эеран кол-во столкновений объекта с триггером Transparent(фактическое).
     }
 
-    void Finishing()            //... пока пуст.
-    {
-        ScoreText.text = points + " total!";
-    }
 }
+
