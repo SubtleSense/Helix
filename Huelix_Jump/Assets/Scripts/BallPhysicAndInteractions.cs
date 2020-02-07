@@ -1,21 +1,27 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class BallPhysicAndInteractions : MonoBehaviour
 {
     public int shield = 0;             //кол-во столкновений объекта с триггером Transparent(начальное значение).
     public int points = 0;             //кол-во столкновений объекта с триггером Transparent(начальное значение).
-    public int score = 0;             //кол-во столкновений объекта с триггером Transparent(начальное значение).
-    public Text ScoreText;              //компонент для вывод текста.
+    public int score = 0;              //кол-во столкновений объекта с триггером Transparent(начальное значение).
+    public Text ScoreText;             //компонент для вывод текста.
     public GameObject FailPanel;
     private void Start()
     {
         FailPanel.SetActive(false);
+        Time.timeScale = 1.8f;
     }
     public void OnTriggerEnter(Collider other) //взаимодействие объекта с триггерами.
     {
-        Time.timeScale = 1.8f;
+        if (other.tag == "Respawn") 
+        {
+            SceneManager.LoadScene("game");
+        }
+        //Time.timeScale = 1.8f;
         if (other.tag == "Black")           //тригер на обычнную секцию платформы.
         {
             Time.timeScale = 2f;
@@ -37,9 +43,9 @@ public class BallPhysicAndInteractions : MonoBehaviour
             }
         }
 
-        if (other.tag == "Fail")            //тригер на проигрышную секцию платформы.
+        if (other.tag == "Fail")           //тригер на проигрышную секцию платформы.
         {
-            FailPanel.SetActive(true);
+            
 
             if (shield >= 3)       //условие "активации брони"
             {
@@ -52,6 +58,7 @@ public class BallPhysicAndInteractions : MonoBehaviour
 
             else
             {
+                FailPanel.SetActive(true);
                 Time.timeScale = 0;
                 shield = 0;        //"отключил броню".
             }
@@ -72,14 +79,19 @@ public class BallPhysicAndInteractions : MonoBehaviour
         }
     }
 
-    public void ScoreUpdate()          //посчитал столуновения с триггером Transparent, записал в текстовое поле очки.
-    { 
-        points++;                       //кол-во столкновений объекта с триггером Transparent(фактическое).
-        if ((shield >= 3) && (shield != 0))
+    public void ScoreUpdate()          //посчитал столkновения с триггером Transparent, записал в текстовое поле очки.
+    {
+        if(shield == 0)
         {
-            score = score + shield;
+            points = points +5;         // +5 очков за одну платформу
         }
-        ScoreText.text = points + score + "";   //вывел на эеран кол-во столкновений объекта с триггером Transparent(фактическое).
+        if(shield != 0)
+        {
+            points = points + (5 * (shield + 1)); // + 10 очков за каждую следующую платформу, если мяч летит nonStop.
+        }
+        score = points; // переменная для хранения результатов.
+
+        ScoreText.text =  score + "";   //вывел на эеран результат расчета формулы.
     }
 
 }

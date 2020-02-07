@@ -47,6 +47,7 @@ public class ForceAndDestroy : BallPhysicAndInteractions
     }
     public void Restart()          //перезапустил сцену Game.
     {
+        Debug.Log("Restart");
         FailPanel.SetActive(false);
         Time.timeScale = 1.8f;
         SceneManager.LoadScene("game");
