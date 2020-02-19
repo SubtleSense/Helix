@@ -10,10 +10,11 @@ public class BallPhysicAndInteractions : MonoBehaviour
     public int score = 0;              //кол-во столкновений объекта с триггером Transparent(начальное значение).
     public Text ScoreText;             //компонент для вывод текста.
     public GameObject FailPanel;
+
     private void Start()
     {
         FailPanel.SetActive(false);
-        Time.timeScale = 1.8f;
+        Time.timeScale = 3.5f;
     }
     public void OnTriggerEnter(Collider other) //взаимодействие объекта с триггерами.
     {
@@ -21,11 +22,10 @@ public class BallPhysicAndInteractions : MonoBehaviour
         {
             SceneManager.LoadScene("game");
         }
-        //Time.timeScale = 1.8f;
+
+
         if (other.tag == "Black")           //тригер на обычнную секцию платформы.
         {
-            Time.timeScale = 2f;
-
             if (shield >= 3)        //условие "активации брони" 
             {
                 
@@ -59,7 +59,7 @@ public class BallPhysicAndInteractions : MonoBehaviour
             else
             {
                 FailPanel.SetActive(true);
-                Time.timeScale = 0;
+                Time.timeScale = 0f;
                 shield = 0;        //"отключил броню".
             }
 

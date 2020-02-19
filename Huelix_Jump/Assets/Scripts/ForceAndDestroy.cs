@@ -35,7 +35,7 @@ public class ForceAndDestroy : BallPhysicAndInteractions
         {
             ColliderOff = true;                                 //включил коллайдер.
             rb.velocity = Vector3.zero;                         //сбросил ускорение.
-            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);    //указал вектор силы, ее мощность и характер воздействия.
+            rb.AddForce(Vector3.up * 15, ForceMode.Impulse);    //указал вектор силы, ее мощность и характер воздействия.
 
             StartCoroutine(ClliderOff());
         }
@@ -47,11 +47,8 @@ public class ForceAndDestroy : BallPhysicAndInteractions
     }
     public void Restart()          //перезапустил сцену Game.
     {
-        Debug.Log("Restart");
-        FailPanel.SetActive(false);
-        Time.timeScale = 1.8f;
-        SceneManager.LoadScene("game");
-        
+        Time.timeScale = 0f;
+        SceneManager.LoadScene("game");        
     }
 
     public void Finishing()            //... пока пуст.
@@ -60,7 +57,7 @@ public class ForceAndDestroy : BallPhysicAndInteractions
     }
     IEnumerator Destroyer()             //уничтожил текущий платформу через секунду после срабатывания PlatformDestroyer().
     {
-        yield return new WaitForSeconds(1f);   //таймер
+        yield return new WaitForSeconds(2f);   //таймер
         Destroy(this.gameObject);              //дестроер
     }
 }

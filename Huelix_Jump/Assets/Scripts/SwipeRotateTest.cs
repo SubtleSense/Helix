@@ -5,7 +5,7 @@ public class SwipeRotateTest : MonoBehaviour //работает только в 
 
     private Touch touch;
     private Quaternion rotationY;
-    private float rotateSpeedModifier = 0.1f;
+    private float rotateSpeedModifier = 0.5f;
 
 
     void Update()
